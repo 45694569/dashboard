@@ -1,0 +1,118 @@
+
+if (efficiency != null) {
+                console.log(efficiency);
+
+if (currentShift== "C"){
+                  if (currentShift== "A") {
+                 
+                     var effA = efficiencys;
+                     totalEfficiency = effA
+                      console.log(effA);
+                  }else
+                  {
+
+                     var effA = efficiencys;
+                      var effB = efficiencys;
+                     totalEfficiency = (effA + effB)/2
+                     console.log(effB);
+
+                  
+                }
+                
+
+                 } else{
+                  if (currentTime >= shiftTiming.shiftA && currentTime < shiftTiming.shiftB) {
+                    shiftA=computedProduction.shiftA+1;
+                    shiftB= computedProduction.shiftB;
+                    shiftC= computedProduction.shiftC;  
+
+                    totalProduction = shiftA + shiftB +  shiftC;
+                  }else if(currentTime >= shiftTiming.shiftB && currentTime < shiftTiming.shiftC){
+
+                    shiftA=computedProduction.shiftA;
+                    shiftB= computedProduction.shiftB+1;  
+                    shiftC= computedProduction.shiftC;  
+
+                    totalProduction = shiftA + shiftB +  shiftC;
+                  } else{
+                    shiftA=computedProduction.shiftA;
+                    shiftB= computedProduction.shiftB;
+                    shiftC= computedProduction.shiftC+1;  
+
+                    totalProduction = shiftA + shiftB +  shiftC;
+                  }
+                }
+                var computedProduction = {
+                  clientId:machine.clientId,
+                  machineId:req.body.machineId,
+                  eDate:currentDate,
+                  shiftA:shiftA,
+                  shiftB:shiftB,
+                  shiftC:shiftC,
+                  totalProduction:totalProduction,
+                };
+                    ComputedProduction.updateOne({clientId:machine.clientId,machineId:req.body.machineId,eDate:currentDate },computedProduction, function(err, computedProduction){
+                      if(err)
+                       next(err);
+                      else {
+                        console.log(computedProduction);
+                      }
+                     });
+
+
+                }else{
+                  if (shiftTiming.shiftC == "") {
+                    if (currentTime >= shiftTiming.shiftA && currentTime < shiftTiming.shiftB) {
+                 
+                      shiftA=1;
+                      shiftB=0;  
+                      totalProduction = shiftA + shiftB;
+                    }else
+                    {
+  
+                      shiftA=0;
+                      shiftB=1;  
+                      totalProduction = shiftA + shiftB;
+                      
+                    
+                  }
+                  
+  
+                   } else{
+                    if (currentTime >= shiftTiming.shiftA && currentTime < shiftTiming.shiftB) {
+                      shiftA=1;
+                      shiftB=0;
+                      shiftC=0;
+                      totalProduction =  shiftA +  shiftB + shiftC;
+  
+                      // computedProduction.totalProduction = computedProduction.shiftA + computedProduction.shiftB +  computedProduction.shiftC;
+                    }else if(currentTime >= shiftTiming.shiftB && currentTime < shiftTiming.shiftC){
+                      shiftA=0;
+                      shiftB=1;
+                      shiftC=0;
+                      totalProduction =  shiftA +  shiftB + shiftC;
+                    } else{
+                      shiftA=0;
+                      shiftB=0;
+                      shiftC=1;
+                      totalProduction =  shiftA +  shiftB + shiftC;
+                    }
+                
+                   }
+                   var computedProduction = new ComputedProduction();
+                   computedProduction.clientId = machine.clientId;
+                   computedProduction.machineId = req.body.machineId;
+                   computedProduction.eDate = currentDate;
+                   computedProduction.shiftA = shiftA;
+                   computedProduction.shiftB = shiftB;
+                   computedProduction.shiftC = shiftC;
+                   computedProduction.totalProduction = totalProduction;
+                   computedProduction.save(function(err) {
+                     if (err){
+                  
+                     }
+                       
+             
+                    
+                   });
+                }

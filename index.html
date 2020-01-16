@@ -1,0 +1,169 @@
+
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+    <title>Bootstrap Example</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  </head>
+  <style>
+    .down {
+      margin-top: 20px;
+    }
+  </style>
+  <body>
+    <div id='myDiv'></div>
+  <div class="container-fluid">
+    <div class="col-md-12">
+      <h2>Production Analysis</h2>            
+      <table class="table table-hover" id="prodTableBody">
+        <thead>
+          <tr>
+            <th>Sr.No</th>
+            <th>Date</th>
+            <th>Machine Name</th>
+            <th>Job</th>
+            <th>Shift A</th>
+            <th>Shift B</th>
+            <th>Total</th>
+          </tr>
+        </thead>
+      </table>
+    </div>
+  </div><br>
+  <div class="container-fluid">
+    <div class="col-md-12">
+      <div class="row">
+        <div class="col-md-6">
+          <h2>Overall Efficiency</h2>
+        </div>
+        <div class="col-md-6">
+          <h2>Overall OEE</h2>
+        </div>
+      </div>
+    </div>
+  </div><br>
+  <div class="container-fluid">
+    <div class="col-md-12">
+      <div class="row">
+        <div class="col-md-8">
+           <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Machine Name</th>
+                  <th>Start Time</th>
+                  <th>End Time</th>
+                  <th>Downtime</th>
+                  <th>Reason</th>
+                </tr>
+              </thead>
+            </table>
+        </div>
+        <div class="col-md-4">
+          <h2>Downtime / Uptime</h2>
+        </div>
+      </div>
+    </div>
+  </div><br>
+  <div class="container-fluid">
+    <div class="col-md-12">
+      <div class="row">
+        <div class="col-md-4">
+          <label>Select machine</label><br>
+          <input type="text" name="" data-toggle="dropdown">
+          <div class="dropdown-menu">
+            <a class="dropdown-item active" href="#">Machine 1</a>
+            <a class="dropdown-item" href="#">Machine 2</a>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <label>Date</label><br>
+          <input type="text" name="">
+        </div>
+        <div class="col-md-4">
+        </div><br>
+        <div class="col-md-4 down">
+          <button type="button" class="btn btn-danger">Generate Report</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script>
+
+
+//for the second  graph
+$(document).ready(function(){
+var email={
+        'machineId': 'VIC290CNC99',
+        'eDate': '2019-06-14T00:00:00.000Z'
+};
+var yEffA = [];
+var yEffB = [];
+var xDateA = [];
+var xDateB = [];
+var j = 0; 
+
+$.ajax({
+    url: "http://localhost:3000/api/downTimeLogs",
+    headers: {
+        'Authorization':"BEARER 2HQ6xG29mp8kXslCDs8l1BhnSPxN2UdrftzFv8f9VrC1FrZ3RtHnHmDovMBZvPCDyXiEq910aH0VMIogWF61uWdTnZAIYf2ZXHXOiwoqZntbEUpxneq4Seu0BuLibNIwNrvsSt0PanuZphPWFdDyfNmTflUK3lZa8IOtvugkmWXOkb0wMwUgxzXzzbBKOZyqmthekO6e8R8yY6VSbe1csyqVSQCCXKcCfBmuFBHk7CWfkRyhqHvqaReD5rTelaE1"
+    },
+    type: "POST",
+    data: JSON.stringify(),
+    contentType: "application/json",
+    success: function (data) {
+        console.log('succes: ',data);
+         for (j = 0; j < data.length; j++) {
+         
+  
+
+          for (i = 0; i < data[j]['data'].length; i++){
+           
+            xDateA.push(data[j]['data'][i]['eTimeStamp']);
+            yEffA.push(data[j]['data'][i]['dataR']);
+          }
+}
+if (j == data.length) {
+var trace1 = {
+x: xDateA,
+y: yEffA,
+
+type: 'scatter',
+};
+
+//var trace2 = {
+//x: xDateB,
+//y: yEffB,
+
+//type: 'scatter',
+//};
+
+
+
+var effplot = [trace1];
+
+
+Plotly.newPlot('myDiv', effplot, {}, {showSendToCloud: true});
+    }
+  }
+  
+});
+
+});
+// end of graph
+
+
+
+
+
+</script>
+  </body>
+  </html>
+  
