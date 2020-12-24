@@ -13,7 +13,7 @@
     "async": "^3.1.0",
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.19.0",
-    "date-and-time": "^0.8.1",
+    "date-and-time": "^0.14.2",
     "ejs": "^2.6.2",
     "express": "^4.17.1",
     "express-session": "^1.16.2",
